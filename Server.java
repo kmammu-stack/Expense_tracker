@@ -28,7 +28,7 @@ HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
         server.setExecutor(null);
         server.start();
 
-        System.out.println("✅ Java backend running at http://localhost:8080");
+        System.out.println("✅ Java backend running on port " + port);
         System.out.println("📋 API ready!");
     }
 
