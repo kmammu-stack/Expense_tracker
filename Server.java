@@ -23,6 +23,7 @@ public class Server {
         server.createContext("/api/sort",      new SortHandler());
         server.createContext("/api/stats",     new StatsHandler());
         server.createContext("/api/health",    new HealthHandler());
+        server.createContext("/",              new FrontendHandler());
 
         server.setExecutor(null);
         server.start();
@@ -269,6 +270,58 @@ public class Server {
         public void handle(HttpExchange ex) throws IOException {
             if (ex.getRequestMethod().equals("OPTIONS")) { sendJson(ex, 200, "{}"); return; }
             sendJson(ex, 200, "{\"status\":\"running\",\"message\":\"Java backend is up!\"}");
+        }
+    }
+
+    // ════════════════════════════════════════════════════════
+    // ROUTE 7: /  → Frontend static pages and assets
+    // ════════════════════════════════════════════════════════
+    static class FrontendHandler implements HttpHandler {
+        public void handle(HttpExchange ex) throws IOException {
+            String path = ex.getRequestURI().getPath();
+            
+            if (path.equals("/") || path.equals("/dashboard")) {
+                serveFile(ex, "src/main/resources/templates/dashboard.html", "text/html");
+            } else if (path.equals("/reports")) {
+                serveFile(ex, "src/main/resources/templates/reports.html", "text/html");
+            } else if (path.equals("/budget")) {
+                serveFile(ex, "src/main/resources/templates/budget.html", "text/html");
+            } else if (path.equals("/add-expense")) {
+                serveFile(ex, "src/main/resources/templates/add-expense.html", "text/html");
+            } else if (path.equals("/css/style.css")) {
+                serveFile(ex, "src/main/resources/static/css/style.css", "text/css");
+            } else if (path.equals("/js/script.js")) {
+                serveFile(ex, "src/main/resources/static/js/script.js", "application/javascript");
+            } else {
+                String response = "404 Not Found";
+                ex.sendResponseHeaders(404, response.length());
+                OutputStream os = ex.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+            }
+        }
+
+        private void serveFile(HttpExchange ex, String filePath, String contentType) throws IOException {
+            File file = new File(filePath);
+            if (!file.exists()) {
+                String response = "404 File Not Found";
+                ex.sendResponseHeaders(404, response.length());
+                OutputStream os = ex.getResponseBody();
+                os.write(response.getBytes());
+                os.close();
+                return;
+            }
+
+            ex.getResponseHeaders().set("Content-Type", contentType);
+            ex.sendResponseHeaders(200, file.length());
+            try (FileInputStream fis = new FileInputStream(file);
+                 OutputStream os = ex.getResponseBody()) {
+                byte[] buffer = new byte[1024];
+                int bytesRead;
+                while ((bytesRead = fis.read(buffer)) != -1) {
+                    os.write(buffer, 0, bytesRead);
+                }
+            }
         }
     }
 }
