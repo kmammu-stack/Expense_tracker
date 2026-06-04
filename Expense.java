@@ -1,32 +1,41 @@
-// FILE 1 — Expense.java
-// Stores one expense — same as your lab!
+// Expense.java — Updated to match your teammates' code
+// They use: getId(), getAmount(), getCategory(), getDate(), getDescription()
+// So we add those getters to match!
 
 public class Expense {
-    public int id;
-    public String desc;
-    public double amount;
-    public String cat;   // Food, Travel, Academic, Personal, Bills, Other
-    public String date;
 
-    public Expense(int id, String desc, double amount, String cat, String date) {
+    public int    id;
+    public double amount;
+    public String cat;         // used by features team (e.cat)
+    public String date;
+    public String desc;        // used by features team (e.desc)
+
+    public Expense(int id, double amount, String cat, String date, String desc) {
         this.id     = id;
-        this.desc   = desc;
         this.amount = amount;
         this.cat    = cat;
         this.date   = date;
+        this.desc   = desc;
     }
 
-    // Show expense as text
+    // ── Getters (used by FileHandler and DisplayHelper from frontend team) ───
+    public int    getId()          { return id; }
+    public double getAmount()      { return amount; }
+    public String getCategory()    { return cat; }   // frontend uses getCategory()
+    public String getDate()        { return date; }
+    public String getDescription() { return desc; }  // frontend uses getDescription()
+
+    // ── Used by Server.java to save to file ──────────────────────────────────
     public String toText() {
-        return id + "," + desc + "," + amount + "," + cat + "," + date;
+        return id + "," + amount + "," + cat + "," + date + "," + desc;
     }
 
-    // Convert to JSON so frontend can read it
+    // ── Used by Server.java to send data to React frontend ───────────────────
     public String toJson() {
-        return "{\"id\":" + id +
-               ",\"desc\":\"" + desc + "\"" +
+        return "{\"id\":"      + id +
                ",\"amount\":" + amount +
-               ",\"cat\":\"" + cat + "\"" +
-               ",\"date\":\"" + date + "\"}";
+               ",\"cat\":\""   + cat  + "\"" +
+               ",\"date\":\""  + date + "\"" +
+               ",\"desc\":\""  + desc + "\"}";
     }
 }
