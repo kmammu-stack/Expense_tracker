@@ -1,0 +1,432 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+:root{
+    --bg:#f8f6f2;
+    --card:#ffffff;
+    --text:#1f2937;
+    --muted:#6b7280;
+    --accent:#2e7d32;
+    --accent-light:#e8f5e9;
+    --border:#ececec;
+}
+
+body{
+    background:var(--bg);
+    color:var(--text);
+}
+
+/* =========================
+   NAVBAR
+========================= */
+
+.navbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:28px 8%;
+    background:white;
+    border-bottom:1px solid #f0f0f0;
+}
+
+.logo{
+    font-size:24px;
+    font-weight:700;
+}
+
+.nav-links{
+    display:flex;
+    gap:35px;
+}
+
+.nav-links a{
+    text-decoration:none;
+    color:var(--text);
+    font-weight:500;
+    transition:.3s;
+}
+
+.nav-links a:hover{
+    color:var(--accent);
+}
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero{
+    min-height:80vh;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:80px 8%;
+}
+
+.hero-content{
+    max-width:650px;
+}
+
+.tag{
+    display:inline-block;
+    background:var(--accent-light);
+    color:var(--accent);
+    padding:10px 18px;
+    border-radius:999px;
+    font-size:14px;
+    font-weight:600;
+}
+
+.hero h1{
+    font-size:72px;
+    line-height:1.1;
+    margin-top:25px;
+    font-weight:800;
+}
+
+.hero p{
+    margin-top:25px;
+    color:var(--muted);
+    font-size:18px;
+    line-height:1.8;
+}
+
+.hero-buttons{
+    margin-top:35px;
+    display:flex;
+    gap:15px;
+}
+
+.btn-primary{
+    background:var(--accent);
+    color:white;
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:12px;
+    font-weight:600;
+}
+
+.btn-secondary{
+    background:white;
+    color:var(--text);
+    text-decoration:none;
+    padding:15px 30px;
+    border-radius:12px;
+    border:1px solid #ddd;
+    font-weight:600;
+}
+
+/* =========================
+   HERO GRAPHIC
+========================= */
+
+.hero-graphic{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.chart-card{
+    width:380px;
+    height:300px;
+    background:white;
+    border-radius:24px;
+    padding:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,.08);
+    position:relative;
+}
+
+.chart-line{
+    position:absolute;
+    width:220px;
+    height:120px;
+    border-left:5px solid var(--accent);
+    border-bottom:5px solid var(--accent);
+    transform:rotate(-30deg);
+    top:90px;
+    left:70px;
+}
+
+.chart-card h3{
+    position:absolute;
+    bottom:50px;
+    left:30px;
+}
+
+.chart-card p{
+    position:absolute;
+    bottom:25px;
+    left:30px;
+    color:var(--muted);
+}
+
+/* =========================
+   STAT CARDS
+========================= */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:25px;
+    padding:0 8%;
+    margin-bottom:80px;
+}
+
+.card{
+    background:white;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.card span{
+    color:var(--muted);
+}
+
+.card h2{
+    margin-top:10px;
+    font-size:42px;
+}
+
+/* =========================
+   TRANSACTIONS
+========================= */
+
+.transactions{
+    padding:0 8% 100px;
+}
+
+.transactions h2{
+    font-size:36px;
+    margin-bottom:30px;
+}
+
+.transaction{
+    background:white;
+    padding:25px;
+    border-radius:16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,.04);
+}
+
+.transaction h4{
+    margin-bottom:5px;
+}
+
+.transaction span{
+    color:var(--muted);
+}
+
+/* =========================
+   PAGE HEADER
+========================= */
+
+.page-header{
+    text-align:center;
+    padding:80px 20px 50px;
+}
+
+.page-header h1{
+    font-size:60px;
+    font-weight:800;
+}
+
+.page-header p{
+    margin-top:15px;
+    color:var(--muted);
+    font-size:18px;
+}
+
+/* =========================
+   FORM CARD
+========================= */
+
+.form-card{
+    width:550px;
+    max-width:90%;
+    margin:0 auto 80px;
+    background:white;
+    padding:50px;
+    border-radius:24px;
+    box-shadow:0 15px 40px rgba(0,0,0,.06);
+}
+
+.form-card form{
+    display:flex;
+    flex-direction:column;
+    gap:15px;
+}
+
+.form-card label{
+    font-weight:500;
+}
+
+.form-card input,
+.form-card select{
+    height:55px;
+    padding:0 15px;
+    border:1px solid #ddd;
+    border-radius:12px;
+    outline:none;
+}
+
+.form-card input:focus,
+.form-card select:focus{
+    border-color:var(--accent);
+}
+
+.form-card button{
+    margin-top:10px;
+    height:55px;
+    background:var(--accent);
+    color:white;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================
+   REPORTS
+========================= */
+
+.report-card,
+.table-card{
+    background:white;
+    margin:40px 8%;
+    padding:35px;
+    border-radius:20px;
+    box-shadow:0 10px 25px rgba(0,0,0,.05);
+}
+
+.report-card h2,
+.table-card h2{
+    margin-bottom:20px;
+}
+
+.progress-item{
+    margin-top:25px;
+}
+
+.progress{
+    height:12px;
+    background:#ececec;
+    border-radius:50px;
+    overflow:hidden;
+    margin-top:10px;
+}
+
+.progress div{
+    height:100%;
+    background:var(--accent);
+}
+
+/* =========================
+   TABLE
+========================= */
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+th{
+    text-align:left;
+    padding:15px;
+    background:#f4f4f4;
+}
+
+td{
+    padding:15px;
+    border-bottom:1px solid #eee;
+}
+
+/* =========================
+   BUDGET PAGE
+========================= */
+
+.budget-wrapper{
+    padding:40px 8% 100px;
+}
+
+.budget-card{
+    background:white;
+    max-width:900px;
+    margin:auto;
+    padding:50px;
+    border-radius:25px;
+    box-shadow:0 15px 40px rgba(0,0,0,.06);
+}
+
+.budget-card h1{
+    font-size:70px;
+    margin:20px 0;
+}
+
+.progress-large{
+    height:18px;
+    background:#ececec;
+    border-radius:999px;
+    overflow:hidden;
+    margin-top:30px;
+}
+
+.progress-fill{
+    width:60%;
+    height:100%;
+    background:var(--accent);
+}
+
+.budget-footer{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:40px;
+}
+
+.status{
+    background:var(--accent-light);
+    color:var(--accent);
+    padding:12px 20px;
+    border-radius:999px;
+    font-weight:600;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:900px){
+
+    .hero{
+        flex-direction:column;
+        gap:50px;
+        text-align:center;
+    }
+
+    .hero h1{
+        font-size:52px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .budget-footer{
+        flex-direction:column;
+        gap:20px;
+        align-items:flex-start;
+    }
+
+    .nav-links{
+        gap:15px;
+        font-size:14px;
+    }
+}
