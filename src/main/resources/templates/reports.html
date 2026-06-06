@@ -28,67 +28,59 @@
 
     <div class="card">
         <span>Total Spent</span>
-        <h2>₹15,000</h2>
+        <h2 id="report-total-spent">₹0</h2>
     </div>
 
     <div class="card">
         <span>Transactions</span>
-        <h2>24</h2>
+        <h2 id="report-transactions-count">0</h2>
     </div>
 
     <div class="card">
         <span>Top Category</span>
-        <h2>Food</h2>
+        <h2 id="report-top-category">None</h2>
     </div>
 
 </section>
 
 <section class="report-card">
 
-<h2>Expense Breakdown</h2>
+    <h2>Expense Breakdown</h2>
 
-<div class="progress-item">
-    <span>Food</span>
-    <div class="progress"><div style="width:70%"></div></div>
-</div>
-
-<div class="progress-item">
-    <span>Travel</span>
-    <div class="progress"><div style="width:45%"></div></div>
-</div>
-
-<div class="progress-item">
-    <span>Bills</span>
-    <div class="progress"><div style="width:30%"></div></div>
-</div>
+    <div id="category-breakdown">
+        <!-- Dynamically populated progress items -->
+    </div>
 
 </section>
 
 <section class="table-card">
 
-<h2>Recent Expenses</h2>
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+        <h2>Recent Expenses</h2>
+        <div>
+            <label for="sort-by" style="font-weight:500; margin-right:10px;">Sort By:</label>
+            <select id="sort-by" style="padding: 8px 15px; border-radius: 8px; border: 1px solid #ddd; outline:none; height:40px; cursor:pointer;">
+                <option value="default">Default</option>
+                <option value="date">Date</option>
+                <option value="amount">Amount</option>
+            </select>
+        </div>
+    </div>
 
-<table>
-
-<tr>
-<th>Description</th>
-<th>Amount</th>
-<th>Category</th>
-</tr>
-
-<tr>
-<td>Groceries</td>
-<td>₹2000</td>
-<td>Food</td>
-</tr>
-
-<tr>
-<td>Fuel</td>
-<td>₹1500</td>
-<td>Travel</td>
-</tr>
-
-</table>
+    <table>
+        <thead>
+            <tr>
+                <th>Description</th>
+                <th>Amount</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th style="text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody id="expenses-table-body">
+            <!-- Dynamically populated -->
+        </tbody>
+    </table>
 
 </section>
 

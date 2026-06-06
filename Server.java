@@ -13,8 +13,17 @@ public class Server {
     static BudgetTracker  budgetTracker = new BudgetTracker();
 
     public static void main(String[] args) throws Exception {
+        int port = 8080;
+        String portEnv = System.getenv("PORT");
+        if (portEnv != null && !portEnv.isEmpty()) {
+            try {
+                port = Integer.parseInt(portEnv);
+            } catch (NumberFormatException e) {
+                System.out.println("⚠️ Invalid PORT environment variable: " + portEnv + ", defaulting to 8080");
+            }
+        }
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(port), 0);
 
         // ── Routes ────────────────────────────────────────────────
         server.createContext("/api/expenses",  new ExpenseHandler());
@@ -28,7 +37,7 @@ public class Server {
         server.setExecutor(null);
         server.start();
 
-        System.out.println("✅ Java backend running at http://localhost:8080");
+        System.out.println("✅ Java backend running at http://localhost:" + port);
         System.out.println("📋 API ready!");
     }
 
