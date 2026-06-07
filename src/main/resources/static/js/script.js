@@ -28,13 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ── 3. Page Routing Logic ──────────────────────────────────────
-    if (currentPath === "/" || currentPath === "/index.html") {
+    if (currentPath === "/" || currentPath === "/index.html" || currentPath === "/index") {
         initDashboard();
-    } else if (currentPath === "/add-expense.html") {
+    } else if (currentPath === "/add-expense.html" || currentPath === "/add-expense") {
         initAddExpense();
-    } else if (currentPath === "/budget.html") {
+    } else if (currentPath === "/budget.html" || currentPath === "/budget") {
         initBudget();
-    } else if (currentPath === "/reports.html") {
+    } else if (currentPath === "/reports.html" || currentPath === "/reports") {
         initReports();
     }
 });
