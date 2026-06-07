@@ -1,3 +1,5 @@
+const API_BASE = "https://javaaat-production.up.railway.app";
+
 document.addEventListener("DOMContentLoaded", () => {
     // ── 1. Card Animation (Subtle entry effect) ─────────────────────
     const cards = document.querySelectorAll(
@@ -17,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentPath = window.location.pathname;
     document.querySelectorAll(".nav-links a").forEach(link => {
         const href = link.getAttribute("href");
-        if (currentPath === href || (currentPath === "/" && href === "/dashboard")) {
+        if (currentPath === href || (currentPath === "/" && href === "/index.html")) {
             link.style.color = "#2e7d32";
             link.style.fontWeight = "600";
             link.style.borderBottom = "2px solid #2e7d32";
@@ -26,13 +28,13 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // ── 3. Page Routing Logic ──────────────────────────────────────
-    if (currentPath === "/" || currentPath === "/dashboard") {
+    if (currentPath === "/" || currentPath === "/index.html") {
         initDashboard();
-    } else if (currentPath === "/add-expense") {
+    } else if (currentPath === "/add-expense.html") {
         initAddExpense();
-    } else if (currentPath === "/budget") {
+    } else if (currentPath === "/budget.html") {
         initBudget();
-    } else if (currentPath === "/reports") {
+    } else if (currentPath === "/reports.html") {
         initReports();
     }
 });
@@ -40,22 +42,20 @@ document.addEventListener("DOMContentLoaded", () => {
 // ── 4. Helper Function: Get overall monthly budget ────────────────
 function getMonthlyBudgetLimit() {
     const budget = localStorage.getItem("overallBudget");
-    return budget ? parseFloat(budget) : 25000; // Default: ₹25,000
+    return budget ? parseFloat(budget) : 25000;
 }
 
 // ── 5. DASHBOARD PAGE LOGIC ───────────────────────────────────────
 async function initDashboard() {
     const limit = getMonthlyBudgetLimit();
     try {
-        // Fetch budget details from server (passes the overall budget)
-        const budgetRes = await fetch(`/api/budget?amount=${limit}`);
+        const budgetRes = await fetch(`${API_BASE}/api/budget?amount=${limit}`);
         if (budgetRes.ok) {
             const data = await budgetRes.json();
             document.getElementById("display-budget").textContent = `₹${data.budget.toLocaleString('en-IN')}`;
             document.getElementById("display-spent").textContent = `₹${data.totalSpent.toLocaleString('en-IN')}`;
             document.getElementById("display-remaining").textContent = `₹${data.remaining.toLocaleString('en-IN')}`;
-            
-            // Adjust color of remaining text if over budget
+
             const remEl = document.getElementById("display-remaining");
             if (data.isOver) {
                 remEl.style.color = "#d32f2f";
@@ -64,8 +64,7 @@ async function initDashboard() {
             }
         }
 
-        // Fetch recent expenses
-        const expensesRes = await fetch("/api/expenses");
+        const expensesRes = await fetch(`${API_BASE}/api/expenses`);
         if (expensesRes.ok) {
             const expenses = await expensesRes.json();
             const listContainer = document.getElementById("transactions-list");
@@ -76,7 +75,6 @@ async function initDashboard() {
                 return;
             }
 
-            // Display latest 5 expenses (newest first)
             const sorted = [...expenses].reverse().slice(0, 5);
             sorted.forEach(exp => {
                 const item = document.createElement("div");
@@ -100,7 +98,6 @@ async function initDashboard() {
 function initAddExpense() {
     const dateInput = document.getElementById("expense-date");
     if (dateInput) {
-        // Default to today's date
         dateInput.value = new Date().toISOString().split("T")[0];
     }
 
@@ -119,14 +116,14 @@ function initAddExpense() {
             }
 
             try {
-                const res = await fetch("/api/expenses", {
+                const res = await fetch(`${API_BASE}/api/expenses`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ amount, cat, date, desc })
                 });
 
                 if (res.ok) {
-                    window.location.href = "/dashboard";
+                    window.location.href = "/index.html";
                 } else {
                     const err = await res.json();
                     alert(`Error: ${err.error || "Failed to add expense."}`);
@@ -143,7 +140,6 @@ function initAddExpense() {
 async function initBudget() {
     updateBudgetUI();
 
-    // Overall budget update handler
     const setBudgetForm = document.getElementById("set-budget-form");
     if (setBudgetForm) {
         const input = document.getElementById("monthly-budget-input");
@@ -160,7 +156,6 @@ async function initBudget() {
         });
     }
 
-    // Category budget limit handler
     const categoryBudgetForm = document.getElementById("category-budget-form");
     if (categoryBudgetForm) {
         categoryBudgetForm.addEventListener("submit", async (e) => {
@@ -174,7 +169,7 @@ async function initBudget() {
             }
 
             try {
-                const res = await fetch("/api/budget/set", {
+                const res = await fetch(`${API_BASE}/api/budget/set`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ cat, limit })
@@ -183,7 +178,7 @@ async function initBudget() {
                 if (res.ok) {
                     alert(`Budget limit set for ${cat} to ₹${limit.toLocaleString('en-IN')} successfully!`);
                     document.getElementById("category-limit-input").value = "";
-                    updateBudgetUI(); // Refresh calculations
+                    updateBudgetUI();
                 } else {
                     alert("Failed to set category limit.");
                 }
@@ -197,14 +192,14 @@ async function initBudget() {
 async function updateBudgetUI() {
     const limit = getMonthlyBudgetLimit();
     try {
-        const res = await fetch(`/api/budget?amount=${limit}`);
+        const res = await fetch(`${API_BASE}/api/budget?amount=${limit}`);
         if (res.ok) {
             const data = await res.json();
-            
+
             document.getElementById("budget-amount").textContent = `₹${data.budget.toLocaleString('en-IN')}`;
             document.getElementById("budget-spent-text").textContent = `Spent ₹${data.totalSpent.toLocaleString('en-IN')} of ₹${data.budget.toLocaleString('en-IN')}`;
             document.getElementById("budget-remaining").textContent = `₹${data.remaining.toLocaleString('en-IN')}`;
-            
+
             const progressFill = document.getElementById("budget-progress-fill");
             const cappedPercentage = Math.min(data.percentage, 100);
             progressFill.style.width = `${cappedPercentage}%`;
@@ -241,10 +236,8 @@ async function initReports() {
 }
 
 async function loadReportCards() {
-    const limit = getMonthlyBudgetLimit();
     try {
-        // Fetch stats
-        const statsRes = await fetch("/api/stats");
+        const statsRes = await fetch(`${API_BASE}/api/stats`);
         let totalSpent = 0;
         let topCat = "None";
 
@@ -252,23 +245,21 @@ async function loadReportCards() {
             const stats = await statsRes.json();
             totalSpent = stats.totalSpent;
             topCat = stats.topCategory || "None";
-            
+
             document.getElementById("report-total-spent").textContent = `₹${totalSpent.toLocaleString('en-IN')}`;
             document.getElementById("report-top-category").textContent = escapeHTML(topCat);
         }
 
-        // Fetch summary for count and category breakdown
-        const summaryRes = await fetch("/api/summary");
+        const summaryRes = await fetch(`${API_BASE}/api/summary`);
         if (summaryRes.ok) {
             const summary = await summaryRes.json();
             document.getElementById("report-transactions-count").textContent = summary.count;
 
-            // Render breakdown
             const breakdownContainer = document.getElementById("category-breakdown");
             breakdownContainer.innerHTML = "";
 
             const categories = Object.keys(summary.byCategory);
-            const totalForPercentage = totalSpent || 1; // Avoid divide by zero
+            const totalForPercentage = totalSpent || 1;
 
             categories.forEach(cat => {
                 const spent = summary.byCategory[cat];
@@ -298,22 +289,21 @@ async function loadReportCards() {
 
 async function loadExpensesTable(sortBy) {
     try {
-        let url = "/api/expenses";
+        let url = `${API_BASE}/api/expenses`;
         if (sortBy === "date") {
-            url = "/api/sort?by=date";
+            url = `${API_BASE}/api/sort?by=date`;
         } else if (sortBy === "amount") {
-            url = "/api/sort?by=amount";
+            url = `${API_BASE}/api/sort?by=amount`;
         }
 
         const res = await fetch(url);
         if (res.ok) {
             let expenses = await res.json();
-            
-            // If sort is by amount, API sorts ascending usually. Let's make sure it's high to low for reports table.
+
             if (sortBy === "amount") {
-                expenses = expenses.reverse(); 
+                expenses = expenses.reverse();
             } else if (sortBy === "default") {
-                expenses = expenses.reverse(); // Newest first
+                expenses = expenses.reverse();
             }
 
             const tbody = document.getElementById("expenses-table-body");
@@ -335,12 +325,11 @@ async function loadExpensesTable(sortBy) {
                         <button class="delete-btn" data-id="${exp.id}" style="background: none; border: none; color: #d32f2f; font-weight: 600; cursor: pointer; padding: 5px 10px; border-radius: 6px; transition: .2s;">Delete</button>
                     </td>
                 `;
-                
-                // Add hover style behavior to delete button
+
                 const btn = tr.querySelector(".delete-btn");
                 btn.addEventListener("mouseover", () => btn.style.background = "#ffebee");
                 btn.addEventListener("mouseout", () => btn.style.background = "none");
-                
+
                 btn.addEventListener("click", async () => {
                     if (confirm(`Are you sure you want to delete "${exp.desc}"?`)) {
                         await deleteExpense(exp.id);
@@ -357,11 +346,10 @@ async function loadExpensesTable(sortBy) {
 
 async function deleteExpense(id) {
     try {
-        const res = await fetch(`/api/expenses/${id}`, {
+        const res = await fetch(`${API_BASE}/api/expenses/${id}`, {
             method: "DELETE"
         });
         if (res.ok) {
-            // Refresh table and stats card details
             await loadReportCards();
             const sortBySelect = document.getElementById("sort-by");
             await loadExpensesTable(sortBySelect ? sortBySelect.value : "default");
@@ -376,7 +364,7 @@ async function deleteExpense(id) {
 // ── 9. HTML Escaper to prevent XSS ────────────────────────────────
 function escapeHTML(str) {
     if (!str) return "";
-    return str.replace(/[&<>'"]/g, 
+    return str.replace(/[&<>'"]/g,
         tag => ({
             '&': '&amp;',
             '<': '&lt;',
