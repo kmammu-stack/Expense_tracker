@@ -1,21 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Reports</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/script.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/static/css/style.css">
+<script src="/static/js/script.js"></script>
 </head>
-
 <body>
 
 <nav class="navbar">
     <div class="logo">ExpenseTracker</div>
-
     <div class="nav-links">
-        <a href="/dashboard">Dashboard</a>
-        <a href="/reports">Reports</a>
-        <a href="/budget">Budget</a>
-        <a href="/add-expense">Add Expense</a>
+        <a href="/index.html">Dashboard</a>
+        <a href="/reports.html">Reports</a>
+        <a href="/budget.html">Budget</a>
+        <a href="/add-expense.html">Add Expense</a>
     </div>
 </nav>
 
@@ -25,36 +27,26 @@
 </section>
 
 <section class="stats">
-
     <div class="card">
         <span>Total Spent</span>
         <h2 id="report-total-spent">₹0</h2>
     </div>
-
     <div class="card">
         <span>Transactions</span>
         <h2 id="report-transactions-count">0</h2>
     </div>
-
     <div class="card">
         <span>Top Category</span>
         <h2 id="report-top-category">None</h2>
     </div>
-
 </section>
 
 <section class="report-card">
-
     <h2>Expense Breakdown</h2>
-
-    <div id="category-breakdown">
-        <!-- Dynamically populated progress items -->
-    </div>
-
+    <div id="category-breakdown"></div>
 </section>
 
 <section class="table-card">
-
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
         <h2>Recent Expenses</h2>
         <div>
@@ -66,7 +58,6 @@
             </select>
         </div>
     </div>
-
     <table>
         <thead>
             <tr>
@@ -77,11 +68,8 @@
                 <th style="text-align: right;">Action</th>
             </tr>
         </thead>
-        <tbody id="expenses-table-body">
-            <!-- Dynamically populated -->
-        </tbody>
+        <tbody id="expenses-table-body"></tbody>
     </table>
-
 </section>
 
 </body>
